@@ -5,13 +5,13 @@ class SandBox : public Hazel::Application {
 public:
 	SandBox();
 	~SandBox();
-	void Run() override;
 	bool TestEvent();
 };
 
 SandBox::SandBox()
 {
-
+	Application::PushLayer(new Hazel::ExampleLayer("ExampleLayer"));
+	Application::PushLayer(new Hazel::ImGUILayer("ImGUILayer", Application::GetWindow().GetWindowPointer()));
 }
 
 SandBox::~SandBox()
@@ -19,22 +19,10 @@ SandBox::~SandBox()
 
 }
 
-void SandBox::Run()
-{
-	HZ_CORE_TRACE("SandBox Run()");
-	Hazel::KeyPressEvent p(1, 1);
-	Hazel::EventDispatcher dis(p);
-	//dis.Dispatch()
-
-	while (true)
-	{
-		
-	}
-}
 
 bool SandBox::TestEvent()
 {
-
+	return false;
 }
 
 Hazel::Application* Hazel::CreateApplication()

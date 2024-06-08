@@ -2,6 +2,8 @@
 #include "../Core.h"
 #include <string>
 #include <ostream>
+#include <sstream>
+#include <functional>
 
 namespace Hazel {
 	enum class EventType
@@ -46,7 +48,7 @@ namespace Hazel {
 	class HAZEL_API EventDispatcher {
 	public:
 		template<typename T>
-		using EventFn = std::function<bool(&T)>;
+		using EventFn = std::function<bool(T&)>;
 
 		EventDispatcher(Event& event) :mEvent(event) {}
 

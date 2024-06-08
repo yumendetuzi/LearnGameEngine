@@ -32,7 +32,7 @@ namespace Hazel {
 	protected:
 		MouseButtonEvent(int button) :mButton(button) {}
 
-	private:
+	protected:
 		int mButton;
 	};
 
@@ -41,7 +41,7 @@ namespace Hazel {
 	public:
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 
-		MouseButtonPressEvent(int button) :MouseButtonEvent(x) {}
+		MouseButtonPressEvent(int button) :MouseButtonEvent(button) {}
 
 		virtual std::string ToString()
 		{
@@ -56,7 +56,7 @@ namespace Hazel {
 	public:
 		EVENT_CLASS_TYPE(MouseButtonRelease)
 
-			MouseButtonReleaseEvent(int button) :MouseButtonEvent(x) {}
+			MouseButtonReleaseEvent(int button) :MouseButtonEvent(button) {}
 
 		virtual std::string ToString()
 		{

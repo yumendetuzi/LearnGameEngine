@@ -70,7 +70,7 @@ ROOT_DIR   = path.getabsolute("..")
 
 
 local BUILD_DIR = path.join(ROOT_DIR, ".build")
-local THIRD_PARTY_DIR = path.join(ROOT_DIR, "ThirdParty")
+local THIRD_PARTY_DIR = path.join(ROOT_DIR, "../JEngine/ThirdParty")
 
 dofile (path.join(".", "toolchain.lua"))
 if not toolchain(BUILD_DIR, "..") then
@@ -80,6 +80,8 @@ end
 function copyLib()
 end
 
+group "ThirdParty"
+dofile (path.join(".", "GLFW.lua"))
 
 group "Engine"
 project "Hazel"
@@ -90,24 +92,48 @@ project "Hazel"
 	}
 	includedirs {
 		path.join(ROOT_DIR, "Hazel"),
-		path.join(ROOT_DIR, "../JEngine/ThirdParty/spdlog/include")
+		path.join(ROOT_DIR, "../JEngine/ThirdParty/spdlog/include"),
+		path.join(ROOT_DIR, "../JEngine/ThirdParty/glfw-3.3.8/include"),
+		path.join(ROOT_DIR, "../JEngine/ThirdParty/glad/include"),
+		path.join(THIRD_PARTY_DIR, "ImGUI"),
+		-- path.join(THIRD_PARTY_DIR, "ImGUI/backends"),
 	}
 
 	files {
 		path.join(ROOT_DIR, "Hazel/**.h"),
 		path.join(ROOT_DIR, "Hazel/**.cpp"),
+		path.join(THIRD_PARTY_DIR, "ImGUI/*.h"),
+		path.join(THIRD_PARTY_DIR, "ImGUI/*.cpp"),
+		path.join(THIRD_PARTY_DIR, "ImGUI/backends/imgui_impl_opengl3.cpp"),
+		path.join(THIRD_PARTY_DIR, "ImGUI/backends/imgui_impl_glfw.cpp"),
+		path.join(THIRD_PARTY_DIR, "glad/src/glad.c"),
 	}
+	
 	
 	defines{
 		"HAZEL_BUILD",
+		"_CRT_SECURE_NO_WARNINGS",
 	}
-
+	links{
+		"GLFW",
+	}
+	configuration { "Debug" }
+		defines {
+		"HZ_DEBUG",
+		}
+	configuration{"vs*"}
+		defines {
+		"HZ_PLATFORM_WINDOW",
+		}
+	
 	configuration { "linux-*" }
 		--kind "ConsoleApp"
 		flags {
 			"NoImportLib",
 		}
-
+		defines {
+		"HZ_PLATFORM_LINUX",
+		}
 		buildoptions {
 			"-fPIC",
 		}
@@ -149,6 +175,7 @@ project "SandBox"
 	
 	links{
 		"Hazel",
+		"GLFW",
 	}
 
 	configuration{"vs* or linux-*"}
